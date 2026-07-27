@@ -33,7 +33,7 @@ torch_cluster>=1.6
 ## Structure
 
 ```
-cEGNN/
+models/
   layers.py            cEGCL — one conditional, equivariant message-passing step
   displacement_net.py  DisplacementNet — 4 stacked cEGCL steps + regression head
   force_head.py        ForceHead — optional scalar contact-force regressor
@@ -97,7 +97,7 @@ from cegnn import DisplacementNet, ForceHead
 displacement_net = DisplacementNet(k=16)
 force_head = ForceHead()
 
-displacement, _latent = displacement_net(x, batch, cond, cond_feat, point_feat)
+displacement = displacement_net(x, batch, cond, cond_feat, point_feat)
 force = force_head(input_points, batch, displacement, cond, point_feat, cond_feat)
 ```
 
