@@ -16,7 +16,7 @@
     --panel-2:#f4f0e6;
     --marker:#4fd8c4;
     --marker-dim:#2f7d73;
-    --tissue:#b40426;
+    --tissue:#d8a98a;
     --bone:#c8c2b4;
     --force:#e8685a;
     --text-soft:#a9b2b4;
@@ -193,6 +193,27 @@
   }
   .diagram-wrap svg{display:block; min-width:760px; width:100%; height:auto;}
 
+  /* figures (real paper images) */
+  figure.fig{margin:0;}
+  figure.fig img{
+    display:block; width:100%; height:auto;
+    border:1px solid var(--line); border-radius:10px;
+    background:#f4f0e6;
+  }
+  figure.fig figcaption{
+    margin-top:10px; font-size:12.5px; line-height:1.6; color:var(--text-soft);
+  }
+  .figure-row{
+    display:grid; grid-template-columns:1fr 1fr; gap:22px; margin-top:36px;
+  }
+  .fig-wide{margin-top:40px;}
+  .fig-wide img{background:#fff;}
+  .card-fig{margin-top:16px;}
+  .card-fig img{background:#fff;}
+  @media (max-width:720px){
+    .figure-row{grid-template-columns:1fr;}
+  }
+
   /* results */
   .stat-row{
     display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:38px;
@@ -313,8 +334,8 @@
       <canvas id="rig-canvas"></canvas>
       <div class="rig-caption">
         <div class="legend">
-          <span><span class="swatch" style="background:var(--marker)"></span> soft tissue point</span>
-          <span><span class="swatch" style="background:var(--bone)"></span> embedded bone point</span>
+          <span><span class="swatch" style="background:#B40426"></span> soft tissue point</span>
+          <span><span class="swatch" style="background:#3B4CC0"></span> embedded bone point</span>
           <span>move the cursor over the phantom to indent it</span>
         </div>
         <div class="readout mono" id="rig-readout">F ≈ 0.0 N</div>
@@ -439,6 +460,7 @@
         </g>
       </svg>
     </div>
+    <!-- TODO: swap for the real Figure 2 once a PNG/PDF/SVG export is available -->
   </div>
 </section>
 
@@ -469,10 +491,16 @@
         <tr><th>Model</th><th>Force error [N]</th><th>Mean dist. [mm]</th><th>Rel. tip err. [%]</th><th>Time [s / step]</th></tr>
       </thead>
       <tbody>
-        <tr><td>Baseline cGNN</td><td class="num">0.599 ± 1.077</td><td class="num">2.431 ± 1.056</td><td class="num">3.1 ± 2.7</td><td class="num">0.056 ± 0.002</td></tr>
-        <tr><td>Baseline cGNN, rotated</td><td class="num">3.565 ± 5.700</td><td class="num">3.072 ± 1.566</td><td class="num">3.6 ± 3.3</td><td class="num">0.050 ± 0.002</td></tr>
-        <tr class="ours"><td>Ours (cEGCL)</td><td class="num">0.701 ± 1.111</td><td class="num">2.105 ± 0.864</td><td class="num">2.3 ± 1.8</td><td class="num">0.015 ± 0.001</td></tr>
-        <tr class="ours"><td>Ours (cEGCL), rotated</td><td class="num">1.162 ± 1.757</td><td class="num">2.714 ± 1.367</td><td class="num">3.0 ± 2.5</td><td class="num">0.019 ± 0.001</td></tr>
+        <tr>
+          <td>Baseline cGNN</td><td class="num">0.599 ± 1.077</td><td class="num">2.431 ± 1.056</td><td class="num">3.1 ± 2.7</td>
+          <td class="num" rowspan="2" style="vertical-align:middle;">0.056 ± 0.002</td>
+        </tr>
+        <tr><td>Baseline cGNN, rotated</td><td class="num">3.565 ± 5.700</td><td class="num">3.072 ± 1.566</td><td class="num">3.6 ± 3.3</td></tr>
+        <tr class="ours">
+          <td>Ours (cEGCL)</td><td class="num">0.701 ± 1.111</td><td class="num">2.105 ± 0.864</td><td class="num">2.3 ± 1.8</td>
+          <td class="num" rowspan="2" style="vertical-align:middle;">0.015 ± 0.001</td>
+        </tr>
+        <tr class="ours"><td>Ours (cEGCL), rotated</td><td class="num">1.162 ± 1.757</td><td class="num">2.714 ± 1.367</td><td class="num">3.0 ± 2.5</td></tr>
       </tbody>
     </table>
   </div>
@@ -483,6 +511,18 @@
     <div class="kicker">Data</div>
     <h2 class="section-title">A physical phantom, matched by a large FEM dataset</h2>
     <p class="lede">A 3D-printed ABS bone shape was embedded in silicone (Eurosil 4, 1A:1B:2.5S ratio) and tracked with a five-camera Qualisys motion capture rig and a Nano17 force sensor at the indentation tip, then complemented with quasi-static COMSOL simulations of the same heterogeneous geometry.</p>
+
+    <div class="figure-row">
+      <figure class="fig">
+        <img src="figures/figure1a.jpg" alt="Photo of the 3D-printed bone shape embedded in silicone, with 3 mm passive reflective markers glued to the surface.">
+        <figcaption>(a) 3D-printed shape embedded in silicone with glued 3&nbsp;mm passive reflective markers to record the surface deformation.</figcaption>
+      </figure>
+      <figure class="fig">
+        <img src="figures/figure1b.jpg" alt="Binary image volume representing the bone shape (blue) inside the silicone block (red).">
+        <figcaption>(b) Binary image volume representing the bone shape and silicone.</figcaption>
+      </figure>
+    </div>
+
     <div class="datagrid">
       <div class="item"><div class="k">1,315</div><div class="d">static deformation states measured on the physical phantom, across 39 indentation locations, in 0.1 N force increments.</div></div>
       <div class="item"><div class="k">12,387</div><div class="d">unique FEM configurations from 592 random probe placements, inclined up to 41° from the surface normal.</div></div>
@@ -601,7 +641,7 @@
       t += 0.016;
       ctx.clearRect(0,0,W,H);
 
-      let totalForce = 0;
+      let maxFalloff = 0, weightedFactor = 0, weightSum = 0;
 
       for(const p of points){
         let tx = p.bx, ty = p.by;
@@ -611,13 +651,18 @@
           const radius = 130;
           if(dist < radius){
             const falloff = 1 - dist/radius;
-            const stiffness = p.tissue === 'bone' ? 0.10 : 1.0;
-            const pull = falloff*falloff * 14 * stiffness;
+            // bone barely displaces (near-rigid)...
+            const pullFactor = p.tissue === 'bone' ? 0.10 : 1.0;
+            const pull = falloff*falloff * 14 * pullFactor;
             const nx = dist>0.001 ? dx/dist : 0;
             const ny = dist>0.001 ? dy/dist : 0;
             tx = p.bx - nx*pull;
             ty = p.by - ny*pull;
-            totalForce += falloff * stiffness * 0.9;
+            // ...but resists more, so pressing on bone reads a larger sensed force
+            const forceFactor = p.tissue === 'bone' ? 10 : 5; // target max N per tissue
+            maxFalloff = Math.max(maxFalloff, falloff);
+            weightedFactor += forceFactor * falloff;
+            weightSum += falloff;
           }
         }
         if(!reduced){
@@ -628,30 +673,36 @@
         p.y += (ty - p.y) * 0.18;
       }
 
+      const avgFactor = weightSum > 0 ? weightedFactor / weightSum : 0;
+      const totalForce = maxFalloff * avgFactor;
+
       // edges
       ctx.lineWidth = 1;
       for(const [a,b] of edges){
         const pa = points[a], pb = points[b];
         const stretch = Math.hypot(pa.x-pa.bx, pa.y-pa.by) + Math.hypot(pb.x-pb.bx, pb.y-pb.by);
-        const alpha = Math.min(0.28, 0.06 + stretch*0.02);
-        ctx.strokeStyle = `rgba(79, 216, 196, ${alpha})`;
+        const alpha = Math.min(0.26, 0.05 + stretch*0.018);
+        ctx.strokeStyle = `rgba(150, 158, 165, ${alpha})`;
         ctx.beginPath();
         ctx.moveTo(pa.x, pa.y);
         ctx.lineTo(pb.x, pb.y);
         ctx.stroke();
       }
 
-      // points
+      // points — colors match the paper's figures: soft tissue #B40426, bone #3B4CC0
       for(const p of points){
         const disp = Math.hypot(p.x-p.bx, p.y-p.by);
-        const r = p.tissue === 'bone' ? 2.1 : 1.8 + Math.min(disp*0.18, 2.2);
+        const r = p.tissue === 'bone' ? 2.2 + Math.min(disp*0.08, 0.8) : 1.8 + Math.min(disp*0.18, 2.2);
         ctx.beginPath();
         ctx.arc(p.x, p.y, r, 0, Math.PI*2);
         if(p.tissue === 'bone'){
-          ctx.fillStyle = 'rgba(200,194,180,0.85)';
+          const glow = Math.min(disp/4, 1);
+          const rr = Math.round(59 + glow*70), gg = Math.round(76 + glow*80), bb = Math.round(192 + glow*40);
+          ctx.fillStyle = `rgba(${rr}, ${gg}, ${Math.min(bb,255)}, 0.9)`;
         }else{
           const glow = Math.min(disp/14, 1);
-          ctx.fillStyle = `rgba(${79+glow*80}, ${216}, ${196-glow*40}, ${0.75+glow*0.25})`;
+          const rr = Math.round(180 + glow*70), gg = Math.round(4 + glow*90), bb = Math.round(38 + glow*70);
+          ctx.fillStyle = `rgba(${rr}, ${gg}, ${bb}, 0.9)`;
         }
         ctx.fill();
       }
