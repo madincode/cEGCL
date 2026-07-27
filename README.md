@@ -94,7 +94,7 @@ displacement, _ = model(input_points, batch, cond, cond_feat, point_feat)
 # separately (against a frozen or already-trained displacement net):
 from cegnn import DisplacementNet, ForceHead
 
-displacement_net = DisplacementNet(k=16)
+displacement_net = DisplacementNet(k=5)
 force_head = ForceHead()
 
 displacement = displacement_net(x, batch, cond, cond_feat, point_feat)
