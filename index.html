@@ -364,6 +364,10 @@
         <div class="num">01</div>
         <h3>Heterogeneous tissue conditioning</h3>
         <p>Each surface point carries a 128-dim binary profile sampled along the z-axis beneath it — soft silicone vs. rigid bone — so the network knows what's underneath before it predicts how the point moves.</p>
+        <figure class="fig card-fig">
+          <img src="figures/figure3b.svg" alt="Tissue features of the condition vector, showing the binary tissue profile sampled from the start to the end of the applied probe line.">
+          <figcaption>Tissue features of the condition with start and end indicating the location of the applied force.</figcaption>
+        </figure>
       </div>
       <div class="card">
         <div class="num">02</div>
@@ -377,90 +381,10 @@
       </div>
     </div>
 
-    <div class="diagram-wrap">
-      <svg viewBox="0 0 1180 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Pipeline: point cloud with tissue profile enters four stacked cEGCL layers, whose outputs are concatenated with the probe conditions and split into a displacement branch and a force branch.">
-        <defs>
-          <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-            <path d="M0,0 L10,5 L0,10 z" fill="#5b6568"/>
-          </marker>
-        </defs>
-        <style>
-          .box{fill:#131b1d; stroke:#2a3336; stroke-width:1;}
-          .boxlabel{font-family:'IBM Plex Mono', monospace; font-size:11.5px; fill:#d3d6d1;}
-          .boxsub{font-family:'IBM Plex Mono', monospace; font-size:10px; fill:#7c8688;}
-          .flow{stroke:#5b6568; stroke-width:1.4; fill:none; marker-end:url(#arrow);}
-          .accent{fill:#4fd8c4;}
-          .accent2{fill:#d8a98a;}
-        </style>
-
-        <!-- input -->
-        <rect class="box" x="20" y="110" width="130" height="80" rx="8"/>
-        <text class="boxlabel" x="35" y="140">Point cloud</text>
-        <text class="boxsub" x="35" y="156">x⁰ ∈ ℝ^(N×3)</text>
-        <text class="boxsub" x="35" y="172">h⁰ tissue profile</text>
-        <circle class="accent" cx="140" cy="122" r="3"/>
-
-        <line class="flow" x1="150" y1="150" x2="188" y2="150"/>
-
-        <!-- cEGCL stack -->
-        <g>
-          <rect class="box" x="190" y="90" width="100" height="120" rx="8"/>
-          <text class="boxlabel" x="205" y="115">cEGCL</text>
-          <text class="boxsub" x="205" y="132">×4 layers</text>
-          <text class="boxsub" x="205" y="150">k-NN edges</text>
-          <text class="boxsub" x="205" y="166">C_s, C_e cond.</text>
-          <text class="boxsub" x="205" y="182">rotation-robust</text>
-        </g>
-
-        <line class="flow" x1="290" y1="150" x2="328" y2="150"/>
-
-        <!-- concat -->
-        <g>
-          <rect class="box" x="330" y="100" width="110" height="100" rx="8"/>
-          <text class="boxlabel" x="345" y="130">Concatenate</text>
-          <text class="boxsub" x="345" y="148">x¹…x^L</text>
-          <text class="boxsub" x="345" y="164">⊕ C_s, C_e, C_h</text>
-        </g>
-
-        <line class="flow" x1="440" y1="130" x2="500" y2="90"/>
-        <line class="flow" x1="440" y1="170" x2="500" y2="215"/>
-
-        <!-- displacement branch -->
-        <g>
-          <rect class="box" x="500" y="40" width="220" height="100" rx="8"/>
-          <text class="boxlabel" x="516" y="68">Displacement branch</text>
-          <text class="boxsub" x="516" y="86">4-layer MLP</text>
-          <text class="boxsub" x="516" y="102">u ∈ ℝ^(N×3)</text>
-          <text class="boxsub" x="516" y="118">ŷ = u + x⁰</text>
-          <circle class="accent" cx="705" cy="55" r="3"/>
-        </g>
-
-        <!-- force branch -->
-        <g>
-          <rect class="box" x="500" y="165" width="220" height="100" rx="8"/>
-          <text class="boxlabel" x="516" y="193">Force branch</text>
-          <text class="boxsub" x="516" y="211">φ_feat → max/mean pool</text>
-          <text class="boxsub" x="516" y="227">φ_force → F ∈ ℝ</text>
-          <circle class="accent2" cx="705" cy="180" r="3"/>
-        </g>
-
-        <line class="flow" x1="720" y1="90" x2="770" y2="90"/>
-        <line class="flow" x1="720" y1="215" x2="770" y2="215"/>
-
-        <!-- outputs -->
-        <g>
-          <rect class="box" x="770" y="55" width="180" height="70" rx="8"/>
-          <text class="boxlabel" x="786" y="85">Deformed surface</text>
-          <text class="boxsub" x="786" y="102">per-point displacement</text>
-        </g>
-        <g>
-          <rect class="box" x="770" y="180" width="180" height="70" rx="8"/>
-          <text class="boxlabel" x="786" y="210">Contact force</text>
-          <text class="boxsub" x="786" y="227">scalar, for haptics</text>
-        </g>
-      </svg>
-    </div>
-    <!-- TODO: swap for the real Figure 2 once a PNG/PDF/SVG export is available -->
+    <figure class="fig fig-wide">
+      <img src="figures/figure2.png" alt="Proposed graph neural network architecture diagram, showing the point cloud input, stacked cEGCL layers, concatenation with conditions, and the displacement and force prediction branches.">
+      <figcaption>Proposed graph neural network architecture. The input is a surface point cloud x⁰ ∈ ℝ<sup>N×d</sup> with point-wise tissue features h⁰ ∈ ℝ<sup>N×d<sub>h</sub></sup>. Conditions C<sub>s</sub>, C<sub>e</sub> indicate the start and end of the applied force location. The Conditional Equivariant Graph Convolution Layers (cEGCLs) update coordinates x<sup>l</sup> and features h<sup>l</sup> across L layers. Outputs from all layers, along with conditions C<sub>s</sub>, C<sub>e</sub> and their tissue features C<sub>h</sub>, are concatenated (⊕) and used by two branches: a displacement branch where an MLP predicts per-point displacement u ∈ ℝ<sup>N×d</sup>, and a force branch that predicts the scalar force F ∈ ℝ.</figcaption>
+    </figure>
   </div>
 </section>
 
@@ -514,7 +438,7 @@
 
     <div class="figure-row">
       <figure class="fig">
-        <img src="figures/figure1a.jpg" alt="Photo of the 3D-printed bone shape embedded in silicone, with 3 mm passive reflective markers glued to the surface.">
+        <img src="figures/figure1a.PNG" alt="Photo of the 3D-printed bone shape embedded in silicone, with 3 mm passive reflective markers glued to the surface.">
         <figcaption>(a) 3D-printed shape embedded in silicone with glued 3&nbsp;mm passive reflective markers to record the surface deformation.</figcaption>
       </figure>
       <figure class="fig">
