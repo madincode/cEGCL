@@ -203,9 +203,17 @@
   figure.fig figcaption{
     margin-top:10px; font-size:12.5px; line-height:1.6; color:var(--text-soft);
   }
-  .figure-row{
+  /* .figure-row{
     display:grid; grid-template-columns:1fr 1fr; gap:22px; margin-top:36px;
+  } */
+  .figure-row{
+    display:flex; flex-wrap:wrap; align-items:flex-start; gap:22px; margin-top:36px;
   }
+  .figure-row .fig{flex:1 1 260px; max-width:100%;}
+  .figure-row .fig img{
+    height:260px; width:100%; object-fit:contain; background:#f4f0e6;
+  }
+  
   .fig-wide{margin-top:40px;}
   .fig-wide img{background:#fff;}
   .card-fig{margin-top:16px;}
